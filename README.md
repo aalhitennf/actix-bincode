@@ -1,6 +1,6 @@
 # actix-bincode
 
-Bincode payload extractor for Actix Web
+[Bincode](https://crates.io/crates/bincode) payload extractor for Actix Web
 
 ## Example
 
@@ -25,5 +25,5 @@ async fn index(object: Bincode<Object>) -> HttpResponse {
 
 This project is licensed under 
 
-- MIT license ([LICENSE](LICENSE) or [https://opensource.org/licenses/MIT](https://opensource.org/licenses/MIT))
+- MIT license ([LICENSE](LICENSE))
 
