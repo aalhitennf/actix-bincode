@@ -3,6 +3,7 @@ name = "actix-bincode"
 version = "0.1.0"
 edition = "2021"
 authors = ["Olli Paananen <paananen.olli@tuta.io>"]
+description = "Bincode extractor for Actix Web"
 keywords = ["actix", "web", "bincode"]
 repository = "https://github.com/aalhitennf/actix-bincode"
 license = "MIT"
