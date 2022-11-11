@@ -11,19 +11,21 @@
 /// 
 #[derive(Clone, Debug)]
 pub struct BincodeConfig {
+    /// Bytes
     pub limit: usize,
 }
 
 #[allow(dead_code)]
 impl BincodeConfig {
     #[must_use]
+    /// Create new config with given limit
     pub fn new(limit: usize) -> Self {
         BincodeConfig { limit }
     }
 }
 
-// Default 256kb
 impl Default for BincodeConfig {
+    /// Defaults to 256kb
     fn default() -> Self {
         BincodeConfig { limit: 262_144 }
     }

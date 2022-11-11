@@ -10,9 +10,6 @@ use std::{ops::Deref, pin::Pin};
 use actix_web::{dev::Payload, web::BytesMut, FromRequest, HttpMessage, HttpRequest};
 use futures::{Future, StreamExt};
 
-pub use config::BincodeConfig;
-pub use error::BincodePayloadError;
-
 /// Extract and deserialize bincode from payload
 ///
 ///     use actix_web::HttpResponse;
@@ -36,18 +33,18 @@ impl<T> FromRequest for Bincode<T>
 where
     T: serde::de::DeserializeOwned + serde::ser::Serialize,
 {
-    type Error = BincodePayloadError;
+    type Error = error::BincodePayloadError;
     type Future = Pin<Box<dyn Future<Output = Result<Self, Self::Error>>>>;
 
     fn from_request(req: &HttpRequest, payload: &mut Payload) -> Self::Future {
         // Validate content type
         if req.content_type() != "application/octet-stream" {
             let content_type = req.content_type().to_string();
-            return Box::pin(async { Err(BincodePayloadError::ContentType(content_type)) });
+            return Box::pin(async { Err(error::BincodePayloadError::ContentType(content_type)) });
         }
 
         // Read limit if present
-        let limit = req.app_data::<BincodeConfig>().map_or(262_144, |c| c.limit);
+        let limit = req.app_data::<config::BincodeConfig>().map_or(262_144, |c| c.limit);
 
         let mut payload = payload.take();
 
@@ -59,7 +56,7 @@ where
 
                 // Prevent too large payloads
                 if buffer.len() + bytes.len() > limit {
-                    return Err(BincodePayloadError::Overflow(limit));
+                    return Err(error::BincodePayloadError::Overflow(limit));
                 }
 
                 buffer.extend(bytes);
@@ -67,7 +64,7 @@ where
 
             match bincode::deserialize::<T>(&buffer) {
                 Ok(value) => Ok(Bincode(value)),
-                Err(e) => Err(BincodePayloadError::Deserialize(e)),
+                Err(e) => Err(error::BincodePayloadError::Deserialize(e)),
             }
         })
     }
@@ -79,7 +76,7 @@ impl<T: serde::ser::Serialize> Bincode<T> {
         self.0
     }
     /// Serializes body into bytes
-    pub fn into_bytes(self) -> Result<BytesMut, BincodePayloadError> {
+    pub fn into_bytes(self) -> Result<BytesMut, error::BincodePayloadError> {
         let mut bytes = BytesMut::new();
         let ser = bincode::serialize(&self.into_inner())?;
         bytes.extend(ser);

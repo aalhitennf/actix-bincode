@@ -6,9 +6,8 @@ authors = ["Olli Paananen <paananen.olli@tuta.io>"]
 description = "Bincode extractor for Actix Web"
 keywords = ["actix", "web", "bincode"]
 repository = "https://github.com/aalhitennf/actix-bincode"
-license = "MIT"
 readme = "README.md"
-licence-file = "LICENSE"
+license-file = "LICENSE"
 
 [lib]
 name = "actix_bincode"
