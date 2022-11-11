@@ -5,7 +5,7 @@ edition = "2021"
 authors = ["Olli Paananen <paananen.olli@tuta.io>"]
 keywords = ["actix", "web", "bincode"]
 repository = "https://github.com/aalhitennf/actix-bincode"
-license = "MIT OR Apache-2.0"
+license = "MIT"
 readme = "README.md"
 licence-file = "LICENSE"
 
