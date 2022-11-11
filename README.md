@@ -14,7 +14,7 @@ pub struct Object {
     pub text: String,
 }
 
-async fn index(object: Bincode<Object>) -> Result<HttpResponse> {
+async fn index(object: Bincode<Object>) -> HttpResponse {
     println!("num: {}", object.num);
     println!("text: {}", object.text);
     HttpResponse::Ok().finish()

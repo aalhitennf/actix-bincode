@@ -1,3 +1,5 @@
+#![allow(clippy::module_name_repetitions)]
+
 /// Config for the extractor  
 ///
 ///     use actix_bincode::BincodeConfig;
@@ -7,12 +9,14 @@
 ///     
 ///     let app = App::new().app_data(config);  
 /// 
+#[derive(Clone, Debug)]
 pub struct BincodeConfig {
     pub limit: usize,
 }
 
 #[allow(dead_code)]
 impl BincodeConfig {
+    #[must_use]
     pub fn new(limit: usize) -> Self {
         BincodeConfig { limit }
     }
