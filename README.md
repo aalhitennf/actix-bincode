@@ -1,6 +1,6 @@
 # actix-bincode
 
-> Bincode payload extractor for Actix Web
+Bincode payload extractor for Actix Web
 
 ## Example
 
