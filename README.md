@@ -64,5 +64,5 @@ let app = App::new().app_data(config);
 
 This project is licensed under 
 
-- MIT license ([LICENSE](LICENSE))
+- MIT license ([LICENSE](LICENSE) or [https://opensource.org/licenses/MIT](https://opensource.org/licenses/MIT))
 

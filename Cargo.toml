@@ -7,6 +7,7 @@ description = "Bincode extractor for Actix Web"
 keywords = ["actix", "web", "bincode"]
 repository = "https://github.com/aalhitennf/actix-bincode"
 readme = "README.md"
+licence = "MIT"
 license-file = "LICENSE"
 
 [lib]
