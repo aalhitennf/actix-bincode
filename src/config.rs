@@ -4,11 +4,11 @@
 ///
 ///     use actix_bincode::config::BincodeConfig;
 ///     use actix_web::App;
-/// 
+///
 ///     let config = BincodeConfig::default();  
 ///     
 ///     let app = App::new().app_data(config);  
-/// 
+///
 #[derive(Clone, Debug)]
 pub struct BincodeConfig {
     /// Bytes

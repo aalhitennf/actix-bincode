@@ -19,7 +19,7 @@ use actix_web::{dev::Payload, web::BytesMut, FromRequest, HttpMessage, HttpReque
 use bincode::config::Configuration;
 use futures::{Future, StreamExt};
 
-/// Extract and deserialize bincode from payload
+/// Extract and decode bincode from payload
 ///
 ///     use actix_web::HttpResponse;
 ///     use actix_bincode::Bincode;
@@ -33,13 +33,14 @@ use futures::{Future, StreamExt};
 ///     // Route
 ///     pub async fn index(object: Bincode<Object>) -> HttpResponse {  
 ///         println!("{}", object.text);
-///         let body = bincode::encode_to_vec(object.into_inner(), bincode::config::standard()).unwrap();
+///         let config = bincode::config::standard();
+///         let body = bincode::encode_to_vec(object.into_inner(), config).unwrap();
 ///         HttpResponse::Ok().body(body)
 ///     }  
 #[derive(Clone, Debug)]
 pub struct Bincode<T>(T);
 
-// Extractor for plain bincode struct
+// Extractor for bincode derived struct
 impl<T> FromRequest for Bincode<T>
 where
     T: bincode::Decode,
@@ -55,10 +56,14 @@ where
         }
 
         // Read limit if present
-        let limit = req.app_data::<config::BincodeConfig>().map_or(262_144, |c| c.limit);
+        let limit = req
+            .app_data::<config::BincodeConfig>()
+            .map_or(262_144, |c| c.limit);
 
         // Read bincode config
-        let bincode_config = req.app_data::<Configuration>().map_or(bincode::config::standard(), |c| c.clone());
+        let bincode_config = req
+            .app_data::<Configuration>()
+            .map_or(bincode::config::standard(), |c| *c);
 
         let mut payload = payload.take();
 
@@ -76,7 +81,7 @@ where
                 buffer.extend(bytes);
             }
 
-            match bincode::decode_from_slice::<T, _>(&buffer.to_vec(), bincode_config) {
+            match bincode::decode_from_slice::<T, _>(&buffer, bincode_config) {
                 Ok((obj, _)) => Ok(Bincode(obj)),
                 Err(e) => Err(error::BincodePayloadError::Decode(e)),
             }
@@ -90,15 +95,21 @@ impl<T: bincode::Encode> Bincode<T> {
         self.0
     }
     /// Serializes body into bytes
-    pub fn into_bytes(self, config: Option<Configuration>) -> Result<BytesMut, error::BincodePayloadError> {
+    pub fn into_bytes(
+        self,
+        config: Option<Configuration>,
+    ) -> Result<BytesMut, error::BincodePayloadError> {
         let mut bytes = BytesMut::new();
-        let ser = bincode::encode_to_vec(&self.into_inner(), config.unwrap_or(bincode::config::standard()))?;
+        let ser = bincode::encode_to_vec(
+            &self.into_inner(),
+            config.unwrap_or(bincode::config::standard()),
+        )?;
         bytes.extend(ser);
         Ok(bytes)
     }
 }
 
-// For easier usability, skip the zero
+// For usability, skip the zero
 impl<T> Deref for Bincode<T> {
     type Target = T;
     fn deref(&self) -> &Self::Target {

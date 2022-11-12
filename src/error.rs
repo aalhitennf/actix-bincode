@@ -53,4 +53,3 @@ impl From<EncodeError> for BincodePayloadError {
         BincodePayloadError::Encode(value)
     }
 }
-

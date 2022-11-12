@@ -15,10 +15,12 @@ struct BincodeObject {
 
 impl Default for BincodeObject {
     fn default() -> Self {
-        BincodeObject { number: 32, text: String::from("thirty-seven") }
+        BincodeObject {
+            number: 32,
+            text: String::from("thirty-seven"),
+        }
     }
 }
-
 
 async fn test_route(object: Bincode<BincodeObject>) -> HttpResponse {
     assert_eq!(object.number, 32);
@@ -43,7 +45,6 @@ async fn extractor() {
 
     assert!(response.status().is_success())
 }
-
 
 #[actix_web::test]
 async fn content_type() {
@@ -75,7 +76,7 @@ async fn content_size() {
 
     let config = bincode::config::standard();
     let body = bincode::encode_to_vec(objects, config).unwrap();
-    
+
     let req = TestRequest::post()
         .uri("/")
         .set_payload(body)

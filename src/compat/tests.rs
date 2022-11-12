@@ -1,4 +1,8 @@
-use actix_web::{HttpResponse, test::{self, TestRequest}, App, web, http::header};
+use actix_web::{
+    http::header,
+    test::{self, TestRequest},
+    web, App, HttpResponse,
+};
 use serde::{Deserialize, Serialize};
 
 use crate::compat::BincodeSerde;
@@ -32,7 +36,6 @@ async fn extractor() {
 
     let app = test::init_service(App::new().route("/", web::post().to(test_route))).await;
     let config = bincode::config::standard();
-
 
     let body = bincode::serde::encode_to_vec(object, config).unwrap();
 

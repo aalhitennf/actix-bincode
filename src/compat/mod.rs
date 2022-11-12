@@ -7,8 +7,7 @@ use actix_web::{dev::Payload, web::BytesMut, FromRequest, HttpMessage, HttpReque
 use bincode::config::Configuration;
 use futures::{Future, StreamExt};
 
-use crate::{error::BincodePayloadError, config::BincodeConfig};
-
+use crate::{config::BincodeConfig, error::BincodePayloadError};
 
 /// Extract and deserialize bincode from payload with serde compatibility
 ///
@@ -50,7 +49,9 @@ where
         let limit = req.app_data::<BincodeConfig>().map_or(262_144, |c| c.limit);
 
         // Read bincode config
-        let bincode_config = req.app_data::<Configuration>().map_or(bincode::config::standard(), |c| c.clone());
+        let bincode_config = req
+            .app_data::<Configuration>()
+            .map_or(bincode::config::standard(), |c| c.clone());
 
         let mut payload = payload.take();
 
@@ -76,22 +77,27 @@ where
     }
 }
 
-
 impl<T: serde::ser::Serialize> BincodeSerde<T> {
     /// Take the inner type
     pub fn into_inner(self) -> T {
         self.0
     }
     /// Serializes body into bytes
-    pub fn into_bytes(self, config: Option<Configuration>) -> Result<BytesMut, BincodePayloadError> {
+    pub fn into_bytes(
+        self,
+        config: Option<Configuration>,
+    ) -> Result<BytesMut, BincodePayloadError> {
         let mut bytes = BytesMut::new();
-        let ser = bincode::serde::encode_to_vec(&self.into_inner(), config.unwrap_or(bincode::config::standard()))?;
+        let ser = bincode::serde::encode_to_vec(
+            &self.into_inner(),
+            config.unwrap_or(bincode::config::standard()),
+        )?;
         bytes.extend(ser);
         Ok(bytes)
     }
 }
 
-// For easier usability, skip the zero
+// For usability, skip the zero
 impl<T> Deref for BincodeSerde<T> {
     type Target = T;
     fn deref(&self) -> &Self::Target {
