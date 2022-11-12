@@ -1,12 +1,13 @@
 # actix-bincode
 
-## NOTICE: This crate uses Bincode version 2.0.0
-
 [Bincode](https://crates.io/crates/bincode) payload extractor for Actix Web
 
-## Example
+### NOTICE: This crate uses Bincode version 2.0.0  
 
-```rust,ignore
+
+### Example
+
+```rust
 use actix_bincode::BincodeSerde;
 use bincode::{Decode, Encode};
 
@@ -25,9 +26,9 @@ async fn index(object: Bincode<Object>) -> HttpResponse {
 }
 ```
 
-## Serde example
+### Serde example
 
-```rust,ignore
+```rust
 use actix_bincode::BincodeSerde;
 use serde::{Deserialize, Serialize};
 
@@ -46,7 +47,18 @@ async fn index(object: BincodeSerde<Object>) -> HttpResponse {
 }
 ```
 
-## License
+### Configuring bincode
+
+Extractor tries to read configuration from actix app data, and defaults to standard if none present:  
+
+```rust
+let config = bincode::config::standard().with_big_endian();
+
+let app = App::new().app_data(config);
+
+```
+
+### License
 
 This project is licensed under 
 
