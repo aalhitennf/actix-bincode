@@ -25,8 +25,8 @@ impl Default for BincodeObject {
 async fn test_route(object: Bincode<BincodeObject>) -> HttpResponse {
     assert_eq!(object.number, 32);
     assert_eq!(object.text, "thirty-seven");
-    let body = bincode::encode_to_vec(object.into_inner(), bincode::config::standard()).unwrap();
-    HttpResponse::Ok().body(body)
+    let bytes = object.into_bytes(None).unwrap(); // Use standard config
+    HttpResponse::Ok().body(bytes)
 }
 
 #[actix_web::test]

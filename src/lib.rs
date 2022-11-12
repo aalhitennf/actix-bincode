@@ -33,8 +33,7 @@ use futures::{Future, StreamExt};
 ///     // Route
 ///     pub async fn index(object: Bincode<Object>) -> HttpResponse {  
 ///         println!("{}", object.text);
-///         let config = bincode::config::standard();
-///         let body = bincode::encode_to_vec(object.into_inner(), config).unwrap();
+///         let body = object.into_bytes(None).unwrap(); // Use standard config
 ///         HttpResponse::Ok().body(body)
 ///     }  
 #[derive(Clone, Debug)]
