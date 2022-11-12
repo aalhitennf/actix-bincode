@@ -1,7 +1,7 @@
 #![allow(clippy::module_name_repetitions)]
 
 use actix_web::{error::PayloadError, HttpResponse, ResponseError};
-use bincode::Error;
+use bincode::error::{DecodeError, EncodeError};
 use derive_more::Display;
 
 #[derive(Debug, Display)]
@@ -14,13 +14,13 @@ pub enum BincodePayloadError {
     #[display(fmt = "Content type error: {_0}")]
     ContentType(String),
 
-    /// Deserialize error
-    #[display(fmt = "Bincode deserialize error: {_0}")]
-    Deserialize(Error),
+    /// Decode error
+    #[display(fmt = "Bincode decode error: {_0}")]
+    Decode(DecodeError),
 
-    /// Serialize error
-    #[display(fmt = "Bincode serialize error: {_0}")]
-    Serialize(Error),
+    /// Encode error
+    #[display(fmt = "Bincode encode error: {_0}")]
+    Encode(EncodeError),
 
     /// Payload error
     #[display(fmt = "Error reading payload: {_0}")]
@@ -42,8 +42,15 @@ impl From<actix_web::error::PayloadError> for BincodePayloadError {
     }
 }
 
-impl From<bincode::Error> for BincodePayloadError {
-    fn from(value: bincode::Error) -> Self {
-        BincodePayloadError::Serialize(value)
+impl From<DecodeError> for BincodePayloadError {
+    fn from(value: DecodeError) -> Self {
+        BincodePayloadError::Decode(value)
     }
 }
+
+impl From<EncodeError> for BincodePayloadError {
+    fn from(value: EncodeError) -> Self {
+        BincodePayloadError::Encode(value)
+    }
+}
+

@@ -2,7 +2,7 @@
 
 /// Config for the extractor  
 ///
-///     use actix_bincode::BincodeConfig;
+///     use actix_bincode::config::BincodeConfig;
 ///     use actix_web::App;
 /// 
 ///     let config = BincodeConfig::default();  
