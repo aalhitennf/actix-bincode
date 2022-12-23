@@ -10,7 +10,7 @@
 ### Example
 
 ```rust
-use actix_bincode::BincodeSerde;
+use actix_bincode::Bincode;
 use bincode::{Decode, Encode};
 
 #[derive(Decode, Encode)]
