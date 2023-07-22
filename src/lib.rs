@@ -57,7 +57,7 @@ where
         // Read limit if present
         let limit = req
             .app_data::<config::BincodeConfig>()
-            .map_or(262_144, |c| c.limit);
+            .map_or(config::DEFAULT_LIMIT_BYTES, |c| c.limit);
 
         // Read bincode config
         let bincode_config = req

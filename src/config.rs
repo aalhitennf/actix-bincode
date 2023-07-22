@@ -11,9 +11,14 @@
 ///
 #[derive(Clone, Debug)]
 pub struct BincodeConfig {
-    /// Bytes
+    /// The maximum size in bytes of a request payload that can be deserialized.
+    /// By default set to [DEFAULT_LIMIT_BYTES]
     pub limit: usize,
 }
+
+/// The default limit in bytes used when deserializing a request payload.
+/// Set to 256 KiB.
+pub const DEFAULT_LIMIT_BYTES: usize = 262_144; // 256 KiB
 
 #[allow(dead_code)]
 impl BincodeConfig {
@@ -25,8 +30,10 @@ impl BincodeConfig {
 }
 
 impl Default for BincodeConfig {
-    /// Defaults to 256kb
+    /// A default config with limit of 256 KiB.
     fn default() -> Self {
-        BincodeConfig { limit: 262_144 }
+        BincodeConfig {
+            limit: DEFAULT_LIMIT_BYTES,
+        }
     }
 }

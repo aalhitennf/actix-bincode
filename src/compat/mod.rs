@@ -7,7 +7,10 @@ use actix_web::{dev::Payload, web::BytesMut, FromRequest, HttpMessage, HttpReque
 use bincode::config::Configuration;
 use futures::{Future, StreamExt};
 
-use crate::{config::BincodeConfig, error::BincodePayloadError};
+use crate::{
+    config::{BincodeConfig, DEFAULT_LIMIT_BYTES},
+    error::BincodePayloadError,
+};
 
 /// Extract and deserialize bincode from payload with serde compatibility
 ///
@@ -46,7 +49,9 @@ where
         }
 
         // Read limit if present
-        let limit = req.app_data::<BincodeConfig>().map_or(262_144, |c| c.limit);
+        let limit = req
+            .app_data::<BincodeConfig>()
+            .map_or(DEFAULT_LIMIT_BYTES, |c| c.limit);
 
         // Read bincode config
         let bincode_config = req
