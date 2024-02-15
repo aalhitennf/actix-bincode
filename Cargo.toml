@@ -19,7 +19,7 @@ actix-web = "4.5.1"
 bincode = { version = "2.0.0-rc.3", features = ["serde"] }
 derive_more = "0.99.17"
 futures = "0.3.30"
-serde = { version = "1.0.196", features = ["derive"] }
+serde = { version = "1.0.196", features = ["derive"], optional = true }
 
 [features]
-serde = []
+serde = ["dep:serde"]
