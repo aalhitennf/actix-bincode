@@ -13,7 +13,7 @@ pub const DEFAULT_LIMIT_BYTES: usize = 262_144; // 256 KiB
 ///     
 ///     let app = App::new().app_data(config);  
 ///
-#[derive(Clone, Copy, Debug)]
+#[derive(Clone, Copy)]
 pub struct BincodeConfig {
     /// The maximum size in bytes of a request payload that can be deserialized.
     ///
