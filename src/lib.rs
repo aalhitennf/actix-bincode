@@ -94,6 +94,7 @@ impl<T: bincode::Encode> Bincode<T> {
     }
 
     /// Serializes body into bytes
+    #[allow(clippy::missing_errors_doc)]
     pub fn into_bytes(
         self,
         config: Option<Configuration>,

@@ -12,7 +12,7 @@
 #[derive(Clone, Debug)]
 pub struct BincodeConfig {
     /// The maximum size in bytes of a request payload that can be deserialized.
-    /// By default set to [DEFAULT_LIMIT_BYTES]
+    /// By default set to [`DEFAULT_LIMIT_BYTES`]
     pub limit: usize,
 }
 
