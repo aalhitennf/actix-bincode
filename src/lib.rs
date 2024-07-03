@@ -23,20 +23,19 @@ use futures::{Future, StreamExt};
 ///
 ///     use actix_web::HttpResponse;
 ///     use actix_bincode::Bincode;
-///     use bincode::{Decode, Encode};  
+///     use bincode::{Decode, Encode};
 ///
-///     #[derive(Decode, Encode)]  
-///     struct Object {  
-///         text: String,  
-///     }  
-///  
+///     #[derive(Decode, Encode)]
+///     struct Object {
+///         text: String,
+///     }
+///
 ///     // Route
-///     pub async fn index(object: Bincode<Object>) -> HttpResponse {  
+///     pub async fn index(object: Bincode<Object>) -> HttpResponse {
 ///         println!("{}", object.text);
 ///         let body = object.into_bytes(None).unwrap(); // Use standard config
 ///         HttpResponse::Ok().body(body)
-///     }  
-#[derive(Clone, Debug)]
+///     }
 pub struct Bincode<T>(T);
 
 // Extractor for bincode derived struct
@@ -93,6 +92,7 @@ impl<T: bincode::Encode> Bincode<T> {
     pub fn into_inner(self) -> T {
         self.0
     }
+
     /// Serializes body into bytes
     pub fn into_bytes(
         self,

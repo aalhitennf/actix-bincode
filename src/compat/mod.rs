@@ -30,7 +30,6 @@ use crate::{
 ///         let body = bincode::serde::encode_to_vec(object.into_inner(), config).unwrap();
 ///         HttpResponse::Ok().body(body)
 ///     }  
-#[derive(Clone, Debug)]
 pub struct BincodeSerde<T>(T);
 
 // Extractor for serde derived struct
