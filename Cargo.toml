@@ -1,13 +1,12 @@
 [package]
 name = "actix-bincode"
-version = "0.2.4"
+version = "0.2.5"
 edition = "2021"
 authors = ["Olli Paananen <paananen.olli@tuta.io>"]
 description = "Bincode extractor for Actix Web"
 keywords = ["actix", "web", "bincode"]
 repository = "https://github.com/aalhitennf/actix-bincode"
 readme = "README.md"
-licence = "MIT"
 license-file = "LICENSE"
 
 [lib]
@@ -15,11 +14,11 @@ name = "actix_bincode"
 path = "src/lib.rs"
 
 [dependencies]
-actix-web = "4.5.1"
+actix-web = "4.8.0"
 bincode = { version = "2.0.0-rc.3", features = ["serde"] }
-derive_more = "0.99.17"
+derive_more = "0.99.18"
 futures = "0.3.30"
-serde = { version = "1.0.196", features = ["derive"], optional = true }
+serde = { version = "1.0.203", features = ["derive"], optional = true }
 
 [features]
 serde = ["dep:serde"]
