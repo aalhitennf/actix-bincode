@@ -1,6 +1,3 @@
-#[cfg(test)]
-mod tests;
-
 use std::{ops::Deref, pin::Pin};
 
 use actix_web::{dev::Payload, web::BytesMut, FromRequest, HttpMessage, HttpRequest};

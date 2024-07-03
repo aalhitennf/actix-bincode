@@ -5,13 +5,10 @@
 pub mod config;
 pub mod error;
 
-#[cfg(test)]
-mod tests;
-
 #[cfg(feature = "serde")]
-mod compat;
+mod serde_compat;
 #[cfg(feature = "serde")]
-pub use compat::BincodeSerde;
+pub use serde_compat::BincodeSerde;
 
 use config::{BincodeConfig, DEFAULT_LIMIT_BYTES};
 

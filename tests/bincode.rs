@@ -1,11 +1,11 @@
+use actix_bincode::Bincode;
+
 use actix_web::http::{header, StatusCode};
 use actix_web::test;
 use actix_web::test::TestRequest;
 use actix_web::web;
 use actix_web::{App, HttpResponse};
 use bincode::{Decode, Encode};
-
-use super::Bincode;
 
 #[derive(Decode, Encode)]
 struct BincodeObject {
