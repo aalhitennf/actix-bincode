@@ -1,6 +1,6 @@
 [package]
 name = "actix-bincode"
-version = "0.2.5"
+version = "0.3.0"
 edition = "2021"
 authors = ["Olli Paananen <paananen.olli@tuta.io>"]
 description = "Bincode extractor for Actix Web"

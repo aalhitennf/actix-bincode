@@ -1,6 +1,6 @@
 # actix-bincode
 
-![crates.io](https://img.shields.io/crates/v/actix-bincode?label=latest) [![dependency status](https://deps.rs/crate/actix-bincode/0.2.5/status.svg)](https://deps.rs/crate/actix-bincode/0.2.5)
+![crates.io](https://img.shields.io/crates/v/actix-bincode?label=latest) [![dependency status](https://deps.rs/crate/actix-bincode/0.3.0/status.svg)](https://deps.rs/crate/actix-bincode/0.3.0)
 
 [Bincode](https://crates.io/crates/bincode) payload extractor for Actix Web
 
