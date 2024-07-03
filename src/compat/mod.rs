@@ -47,27 +47,27 @@ where
             return Box::pin(async { Err(BincodePayloadError::ContentType(content_type)) });
         }
 
-        // Read limit if present
-        let limit = req
+        // Read config if present
+        let config = req
             .app_data::<BincodeConfig>()
-            .map_or(DEFAULT_LIMIT_BYTES, |c| c.limit);
+            .map_or(BincodeConfig::default(), |c| *c);
 
         // Read bincode config
         let bincode_config = req
             .app_data::<Configuration>()
-            .map_or(bincode::config::standard(), |c| c.clone());
+            .map_or(bincode::config::standard(), |c| *c);
 
         let mut payload = payload.take();
 
         Box::pin(async move {
-            let mut buffer: BytesMut = BytesMut::new();
+            let mut buffer: BytesMut = BytesMut::with_capacity(config.buf_size);
 
             while let Some(bytes) = payload.next().await {
                 let bytes = bytes?;
 
                 // Prevent too large payloads
-                if buffer.len() + bytes.len() > limit {
-                    return Err(BincodePayloadError::Overflow(limit));
+                if buffer.len() + bytes.len() > config.limit {
+                    return Err(BincodePayloadError::Overflow(config.limit));
                 }
 
                 buffer.extend(bytes);
@@ -91,7 +91,7 @@ impl<T: serde::ser::Serialize> BincodeSerde<T> {
         self,
         config: Option<Configuration>,
     ) -> Result<BytesMut, BincodePayloadError> {
-        let mut bytes = BytesMut::new();
+        let mut bytes = BytesMut::with_capacity(DEFAULT_LIMIT_BYTES);
         let ser = bincode::serde::encode_to_vec(
             &self.into_inner(),
             config.unwrap_or(bincode::config::standard()),

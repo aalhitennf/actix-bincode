@@ -13,6 +13,8 @@ mod compat;
 #[cfg(feature = "serde")]
 pub use compat::BincodeSerde;
 
+use config::{BincodeConfig, DEFAULT_LIMIT_BYTES};
+
 use std::{ops::Deref, pin::Pin};
 
 use actix_web::{dev::Payload, web::BytesMut, FromRequest, HttpMessage, HttpRequest};
@@ -38,7 +40,7 @@ use futures::{Future, StreamExt};
 ///     }
 pub struct Bincode<T>(T);
 
-// Extractor for bincode derived struct
+// Extractor for bincode::Decode derived struct
 impl<T> FromRequest for Bincode<T>
 where
     T: bincode::Decode,
@@ -53,10 +55,10 @@ where
             return Box::pin(async { Err(error::BincodePayloadError::ContentType(content_type)) });
         }
 
-        // Read limit if present
-        let limit = req
-            .app_data::<config::BincodeConfig>()
-            .map_or(config::DEFAULT_LIMIT_BYTES, |c| c.limit);
+        // Read config if present
+        let config = req
+            .app_data::<BincodeConfig>()
+            .map_or(BincodeConfig::default(), |c| *c);
 
         // Read bincode config
         let bincode_config = req
@@ -66,14 +68,14 @@ where
         let mut payload = payload.take();
 
         Box::pin(async move {
-            let mut buffer: BytesMut = BytesMut::new();
+            let mut buffer: BytesMut = BytesMut::with_capacity(config.buf_size);
 
             while let Some(bytes) = payload.next().await {
                 let bytes = bytes?;
 
                 // Prevent too large payloads
-                if buffer.len() + bytes.len() > limit {
-                    return Err(error::BincodePayloadError::Overflow(limit));
+                if buffer.len() + bytes.len() > config.limit {
+                    return Err(error::BincodePayloadError::Overflow(config.limit));
                 }
 
                 buffer.extend(bytes);
@@ -99,7 +101,7 @@ impl<T: bincode::Encode> Bincode<T> {
         self,
         config: Option<Configuration>,
     ) -> Result<BytesMut, error::BincodePayloadError> {
-        let mut bytes = BytesMut::new();
+        let mut bytes = BytesMut::with_capacity(DEFAULT_LIMIT_BYTES);
         let ser = bincode::encode_to_vec(
             &self.into_inner(),
             config.unwrap_or(bincode::config::standard()),
