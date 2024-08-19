@@ -7,23 +7,23 @@ use derive_more::Display;
 #[derive(Debug, Display)]
 pub enum BincodePayloadError {
     /// Payload size is bigger than limit
-    #[display(fmt = "Payload size is bigger than {_0}")]
+    #[display("Payload size is bigger than {_0}")]
     Overflow(usize),
 
     /// Content type error
-    #[display(fmt = "Content type error: {_0}")]
+    #[display("Content type error: {_0}")]
     ContentType(String),
 
     /// Decode error
-    #[display(fmt = "Bincode decode error: {_0}")]
+    #[display("Bincode decode error: {_0}")]
     Decode(DecodeError),
 
     /// Encode error
-    #[display(fmt = "Bincode encode error: {_0}")]
+    #[display("Bincode encode error: {_0}")]
     Encode(EncodeError),
 
     /// Payload error
-    #[display(fmt = "Error reading payload: {_0}")]
+    #[display("Error reading payload: {_0}")]
     Payload(PayloadError),
 }
 

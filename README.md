@@ -1,11 +1,10 @@
 # actix-bincode
 
-![crates.io](https://img.shields.io/crates/v/actix-bincode?label=latest) [![dependency status](https://deps.rs/crate/actix-bincode/0.3.0/status.svg)](https://deps.rs/crate/actix-bincode/0.3.0)
+![crates.io](https://img.shields.io/crates/v/actix-bincode?label=latest) [![dependency status](https://deps.rs/crate/actix-bincode/0.3.1/status.svg)](https://deps.rs/crate/actix-bincode/0.3.1)
 
 [Bincode](https://crates.io/crates/bincode) payload extractor for Actix Web
 
-### NOTICE: This crate uses Bincode version 2.0.0-rc.3  
-
+### NOTICE: This crate uses Bincode version 2.0.0-rc.3
 
 ### Example
 
@@ -51,7 +50,7 @@ async fn index(object: BincodeSerde<Object>) -> HttpResponse {
 
 ### Configuring bincode
 
-Extractor tries to read configuration from actix app data, and defaults to standard if none present:  
+Extractor tries to read configuration from actix app data, and defaults to standard if none present:
 
 ```rust
 let config = bincode::config::standard().with_big_endian();
@@ -62,7 +61,6 @@ let app = App::new().app_data(config);
 
 ### License
 
-This project is licensed under 
+This project is licensed under
 
-- MIT license ([LICENSE](LICENSE) or [https://opensource.org/licenses/MIT](https://opensource.org/licenses/MIT))
-
+-   MIT license ([LICENSE](LICENSE) or [https://opensource.org/licenses/MIT](https://opensource.org/licenses/MIT))
