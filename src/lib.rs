@@ -40,7 +40,7 @@ pub struct Bincode<T>(T);
 // Extractor for bincode::Decode derived struct
 impl<T> FromRequest for Bincode<T>
 where
-    T: bincode::Decode,
+    T: bincode::Decode<()>, // () seems to work?
 {
     type Error = error::BincodePayloadError;
     type Future = Pin<Box<dyn Future<Output = Result<Self, Self::Error>>>>;
