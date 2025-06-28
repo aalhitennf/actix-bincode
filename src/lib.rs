@@ -100,7 +100,7 @@ impl<T: bincode::Encode> Bincode<T> {
     ) -> Result<BytesMut, error::BincodePayloadError> {
         let mut bytes = BytesMut::with_capacity(DEFAULT_LIMIT_BYTES);
         let ser = bincode::encode_to_vec(
-            &self.into_inner(),
+            self.into_inner(),
             config.unwrap_or(bincode::config::standard()),
         )?;
         bytes.extend(ser);
